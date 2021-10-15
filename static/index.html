@@ -14,19 +14,32 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
     </head>
     <body class="p-3 mb-2 bg-primary text-white align-center-force">
-        <div class="container text-center">
+        <div id="container" class="container text-center">
             <h1>Thoughtfloat</h1>
             <h5>Anonymous. Free. Forever.</h5>
             <br>
-            <button class="btn btn-info" onclick="$('body').removeClass('align-center-force');$('div').addClass('float');$('button').hide();socket.emit('start');">Start now!</h5></button>
+            <button class="btn btn-info" onclick="$('body').removeClass('align-center-force');$('#container').addClass('float');$('button').hide();setTimeout(() => { $('#bubbles').show(); }, 2000);">Start now!</h5></button>
         </div>
+
+        <div id="bubbles" style="display: none;">
+        </div>
+
+        <input placeholder="Message...">
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io();
 
             socket.on("thoughts", (thoughts) => {
-                console.log(thoughts);
+                $("#bubbles").empty();
+
+                thoughts.forEach(x => {
+                    var bubble = document.createElement("div");
+                    bubble.setAttribute("class", "text-bubble bubble");
+                    var bubbleText = document.createTextNode(x.thought);
+                    bubble.appendChild(bubbleText);
+                    $("#bubbles").append(bubble);
+                });
             });
         </script>
 
@@ -61,6 +74,32 @@
                 100% {
                     top: 0px;
                 }
+            }
+
+            .text-bubble {
+                width: 300px;
+                margin: 50px auto;
+                border-radius: 15px;
+                background: #00bfb6;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+                font-weight: 900;
+                font-family: arial;
+                position: relative;
+            }
+            
+            .bubble:before {
+                content: "";
+                width: 0px;
+                height: 0px;
+                position: absolute;
+                border-left: 15px solid #00bfb6;
+                border-right: 15px solid transparent;
+                border-top: 15px solid #00bfb6;
+                border-bottom: 15px solid transparent;
+                right: -16px;
+                top: 0px;
             }
         </style>
     </body>

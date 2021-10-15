@@ -17,10 +17,8 @@ var database = require("mysql").createPool(mysqlLogin);
 var query = require("util").promisify(database.query).bind(database);
 
 
-io.on("connection", (socket) => {
-    socket.on("start", async () => {
-        socket.emit("thoughts", await query("SELECT * FROM `tf`"));
-    });
+io.on("connection", async (socket) => {
+    socket.emit("thoughts", await query("SELECT * FROM `tf`"));
 
     socket.on("newThought", async (thought) => {
         await query("INSERT INTO `tf`(`thought`) VALUES (?)", [thought]);
