@@ -46,6 +46,8 @@
                 });
             });
 
+            socket.on("thoughtFailed", (reason) => console.log(reason));
+
             (function sendTyping() {
                 if ($("#thought").is(":focus")) {
                     socket.emit("typing", sessionId);

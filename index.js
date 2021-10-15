@@ -17,12 +17,18 @@ var database = require("mysql").createPool(mysqlLogin);
 var query = require("util").promisify(database.query).bind(database);
 
 
+const Filter = require("bad-words");
+const filter = new Filter();
+
 var typing = [];
 
 io.on("connection", async (socket) => {
     socket.emit("thoughts", await query("SELECT * FROM `tf`"));
 
     socket.on("newThought", async (thought) => {
+        if (thought.isProfane()) return socket.emit("thoughtFailed", "MESSAGE_PROFANE");
+        if (encodeURIComponent(thought).length > 10000) return socket.emit("thoughtFailed", "EXCEEDS_10000_CHARACTERS");
+
         await query("INSERT INTO `tf`(`thought`) VALUES (?)", [encodeURIComponent(thought)]);
 
         io.emit("thoughts", await query("SELECT * FROM `tf`"));
