@@ -26,7 +26,7 @@ io.on("connection", async (socket) => {
     socket.emit("thoughts", await query("SELECT * FROM `tf`"));
 
     socket.on("newThought", async (thought) => {
-        if (thought.isProfane()) return socket.emit("thoughtFailed", "MESSAGE_PROFANE");
+        if (filter.isProfane(thought)) return socket.emit("thoughtFailed", "MESSAGE_PROFANE");
         if (encodeURIComponent(thought).length > 10000) return socket.emit("thoughtFailed", "EXCEEDS_10000_CHARACTERS");
 
         await query("INSERT INTO `tf`(`thought`) VALUES (?)", [encodeURIComponent(thought)]);
