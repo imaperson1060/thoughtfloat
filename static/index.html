@@ -24,7 +24,7 @@
         <div id="bubbles" style="display: none;">
         </div>
 
-        <textarea id="thought" class="form-control" placeholder="Message..." style="position:fixed;left:0;bottom:0;display:none;margin:1%;width:98%;resize:none;"></textarea>
+        <textarea id="thought" class="form-control" placeholder="Message..." rows="1" oninput="this.style.height = '';this.style.height = `${this.scrollHeight}px`" style="position:fixed;left:0;bottom:0;display:none;margin:1%;width:98%;resize:none;"></textarea>
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
