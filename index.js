@@ -31,8 +31,6 @@ app.post("/restart/", (req, res) => {
             .digest("hex");
 
     const signature = req.headers["x-hub-signature"];
-    console.log(signature);
-    console.log(expectedSignature);
     if (signature == expectedSignature) {
         res.sendStatus(200);
         process.exit();
