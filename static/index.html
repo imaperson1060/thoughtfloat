@@ -33,6 +33,8 @@
             socket.on("thoughts", (thoughts) => {
                 $("#bubbles").empty();
 
+                thoughts.reverse();
+
                 thoughts.forEach(x => {
                     var bubble = document.createElement("div");
                     bubble.setAttribute("class", "text-bubble bubble");
