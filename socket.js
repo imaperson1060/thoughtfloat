@@ -1,7 +1,7 @@
-module.exports = (database, io) => {
+module.exports = (query, io) => {
     io.on("connection", (socket) => {
         socket.on("start", async () => {
-            socket.emit("messages", await database.query("SELECT * FROM `tf`"));
+            socket.emit("messages", await query("SELECT * FROM `tf`"));
         });
     });
 }

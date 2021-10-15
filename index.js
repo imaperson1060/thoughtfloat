@@ -17,7 +17,7 @@ var database = require("mysql").createPool(mysqlLogin);
 var query = require("util").promisify(database.query).bind(database);
 
 
-require("./socket.js")(database, io);
+require("./socket.js")(query, io);
 
 
 app.get("/up/", (req, res) => {
