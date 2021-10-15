@@ -23,7 +23,7 @@ io.on("connection", async (socket) => {
     socket.emit("thoughts", await query("SELECT * FROM `tf`"));
 
     socket.on("newThought", async (thought) => {
-        await query("INSERT INTO `tf`(`thought`) VALUES (?)", [thought]);
+        await query("INSERT INTO `tf`(`thought`) VALUES (?)", [encodeURIComponent(thought)]);
 
         io.emit("thoughts", await query("SELECT * FROM `tf`"));
     });
