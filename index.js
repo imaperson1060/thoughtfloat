@@ -19,6 +19,8 @@ var query = require("util").promisify(database.query).bind(database);
 
 const Filter = require("bad-words");
 const filter = new Filter();
+const sanitize = require("sanitize-html");
+
 
 var typing = [];
 
@@ -30,7 +32,7 @@ io.on("connection", async (socket) => {
         if (filter.isProfane(thought)) return socket.emit("thoughtFailed", "THOUGHT_PROFANE");
         if (encodeURIComponent(thought).length > 10000) return socket.emit("thoughtFailed", "THOUGHT_EXCEEDS_10000_CHARACTERS");
 
-        await query("INSERT INTO `tf`(`thought`) VALUES (?)", [encodeURIComponent(thought)]);
+        await query("INSERT INTO `tf`(`thought`) VALUES (?)", [encodeURIComponent(sanitize(thought))]);
 
         io.emit("thoughts", await query("SELECT * FROM `tf`"));
     });
