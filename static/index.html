@@ -39,6 +39,7 @@
 
                 thoughts.forEach(x => {
                     var bubble = document.createElement("div");
+                    bubble.setAttribute("id", x.id);
                     bubble.setAttribute("class", "text-bubble bubble");
                     var bubbleText = document.createElement("text");
                     bubbleText.innerHTML = decodeURIComponent(x.thought).replaceAll("\r\n", "<br>").replaceAll("\n", "<br>");
@@ -63,7 +64,7 @@
             socket.on("someoneStoppedTyping", () => console.log("someone stopped typing"));
 
             $(document).keypress(function(event) {
-                if ((event.keyCode ? event.keyCode : event.which) == "13") {
+                if (((event.keyCode ? event.keyCode : event.which) == "13") && !event.shiftKey) {
                     if (!$("#thought").val()) return;
 
                     socket.emit("newThought", $("#thought").val());
