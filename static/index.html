@@ -18,13 +18,13 @@
             <h1>Thoughtfloat</h1>
             <h5>Anonymous. Free. Forever.</h5>
             <br>
-            <button class="btn btn-info" onclick="$('body').removeClass('align-center-force');$('#container').addClass('float');$('button').hide();setTimeout(() => { $('#bubbles').show(); }, 2000);">Start now!</h5></button>
+            <button class="btn btn-info" onclick="$('body').removeClass('align-center-force');$('#container').addClass('float');$('button').hide();setTimeout(() => { $('#bubbles').show();$('#thought').show(); }, 2000);">Start now!</h5></button>
         </div>
 
         <div id="bubbles" style="display: none;">
         </div>
 
-        <input id="thought" class="form-control" placeholder="Message..." style="position:fixed;left:0;bottom:0;">
+        <input id="thought" class="form-control" placeholder="Message..." style="position:fixed;left:0;bottom:0;display:none;">
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
