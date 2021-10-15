@@ -17,7 +17,17 @@ var database = require("mysql").createPool(mysqlLogin);
 var query = require("util").promisify(database.query).bind(database);
 
 
-require("./socket.js")(query, io);
+io.on("connection", (socket) => {
+    socket.on("start", async () => {
+        socket.emit("thoughts", await query("SELECT * FROM `tf`"));
+    });
+
+    socket.on("newThought", async (thought) => {
+        await query("INSERT INTO `tf`(`message`) VALUES (?)", [thought]);
+
+        io.emit("thoughts", await query("SELECT * FROM `tf`"));
+    });
+});
 
 
 app.get("/up/", (req, res) => {
