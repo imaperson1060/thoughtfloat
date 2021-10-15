@@ -24,7 +24,7 @@
         <div id="bubbles" style="display: none;">
         </div>
 
-        <input placeholder="Message...">
+        <input id="thought" placeholder="Message...">
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
@@ -40,6 +40,14 @@
                     bubble.appendChild(bubbleText);
                     $("#bubbles").append(bubble);
                 });
+            });
+
+            $(document).keypress(function(event) {
+                if ((event.keyCode ? event.keyCode : event.which) == "13") {
+                    if (!$("#thought").val()) return;
+
+                    socket.emit("newThought", $("#thought").val());
+                }
             });
         </script>
 
