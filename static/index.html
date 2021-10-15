@@ -47,6 +47,8 @@
                     if (!$("#thought").val()) return;
 
                     socket.emit("newThought", $("#thought").val());
+
+                    $("#thought").val("");
                 }
             });
         </script>
