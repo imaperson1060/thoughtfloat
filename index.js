@@ -32,8 +32,7 @@ io.on("connection", async (socket) => {
         if (typing.find(x => x.id == sessionId)) return typing.find(x => x.id == sessionId).lastping = Math.round(Date.now() / 1000);
         typing.push({ id: sessionId, lastping: Math.round(Date.now() / 1000) });
         checkTyping(sessionId);
-        io.emit("someoneTyping");
-        console.log(typing)
+        socket.broadcast.emit("someoneTyping");
     });
 
     socket.on("stoppedTyping", (sessionId) => {
