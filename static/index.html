@@ -72,23 +72,22 @@
                     $("#thought").val("");
                 }
                 if (((event.keyCode ? event.keyCode : event.which) == "13") && event.shiftKey) {
-                    pasteIntoInput(this, "\n");
+                    console.log(caretPos(this));
                 }
             });
 
-            function pasteIntoInput(el, text) {
-                el.focus();
-                if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
-                    var val = el.value;
-                    var selStart = el.selectionStart;
-                    el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
-                    el.selectionEnd = el.selectionStart = selStart + text.length;
-                } else if (typeof document.selection != "undefined") {
-                    var textRange = document.selection.createRange();
-                    textRange.text = text;
-                    textRange.collapse(false);
-                    textRange.select();
+            var caretPos = function(el) {
+                var pos = 0;
+                if("selectionStart" in el) {
+                    pos = el.selectionStart;
+                } else if("selection" in document) {
+                    el.focus();
+                    var Sel = document.selection.createRange();
+                    var SelLength = document.selection.createRange().text.length;
+                    Sel.moveStart("character", -el.value.length);
+                    pos = Sel.text.length - SelLength;
                 }
+                return pos;
             }
         </script>
 
