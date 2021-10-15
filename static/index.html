@@ -28,6 +28,8 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            var sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
             var socket = io();
 
             socket.on("thoughts", (thoughts) => {
@@ -43,6 +45,19 @@
                     $("#bubbles").append(bubble);
                 });
             });
+
+            (function sendTyping() {
+                if ($("#thought").is(":focus")) {
+                    socket.emit("typing", sessionId);
+                } else {
+                    socket.emit("stoppedTyping", sessionId)
+                }
+
+                setTimeout(() => { sendTyping() }, 1000);
+            })();
+
+            socket.on("someoneTyping", () => console.log("someone typing"));
+            socket.on("someoneStoppedTyping", () => console.log("someone stopped typing"));
 
             $(document).keypress(function(event) {
                 if ((event.keyCode ? event.keyCode : event.which) == "13") {

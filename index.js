@@ -17,6 +17,8 @@ var database = require("mysql").createPool(mysqlLogin);
 var query = require("util").promisify(database.query).bind(database);
 
 
+var typing = [];
+
 io.on("connection", async (socket) => {
     socket.emit("thoughts", await query("SELECT * FROM `tf`"));
 
@@ -25,6 +27,33 @@ io.on("connection", async (socket) => {
 
         io.emit("thoughts", await query("SELECT * FROM `tf`"));
     });
+
+    socket.on("typing", (sessionId) => {
+        if (typing.find(x => x.id == sessionId)) return typing.find(x => x.id == sessionId).lastping = Math.round(Date.now() / 1000);
+        typing.push({ id: sessionId, lastping: Math.round(Date.now() / 1000) });
+        checkTyping(sessionId);
+        io.emit("someoneTyping");
+        console.log(typing)
+    });
+
+    socket.on("stoppedTyping", (sessionId) => {
+        if (!typing.find(x => x.id == sessionId)) return;
+
+        typing = typing.filter(x => x.id != sessionId);
+        if (typing.length == 0) return io.emit("someoneStoppedTyping");
+    });
+
+    function checkTyping(sessionId) {
+        if (typing.length == 0) return;
+
+        if (typing.find(x => x.id == sessionId).lastping < Math.round(Date.now() / 1000) - 10) {
+            typing = typing.filter(x => x.id != sessionId);
+            if (typing.length == 0) return io.emit("someoneStoppedTyping");
+        }
+        else {
+            setTimeout(() => { checkTyping(sessionId) }, 1000);
+        }
+    }
 });
 
 
