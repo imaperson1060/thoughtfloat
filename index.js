@@ -25,12 +25,12 @@ app.get("/up/", (req, res) => {
 });
 
 app.post("/restart/", (req, res) => {
-    const expectedSignature = "sha1=" +
-        require("crypto").createHmac("sha1", process.env.PASSWORD)
+    const expectedSignature = "sha256=" +
+        require("crypto").createHmac("sha256", process.env.PASSWORD)
             .update(JSON.stringify(req.body))
             .digest("hex");
 
-    const signature = req.headers["x-hub-signature"];
+    const signature = req.headers["x-hub-signature-256"];
     console.log(signature);
     console.log(expectedSignature);
     if (signature == expectedSignature) {
