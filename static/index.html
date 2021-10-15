@@ -24,7 +24,7 @@
         <div id="bubbles" style="display: none;">
         </div>
 
-        <input id="thought" class="form-control" placeholder="Message..." style="position:fixed;left:0;bottom:0;display:none;margin:1%;width:98%;">
+        <textarea id="thought" class="form-control" placeholder="Message..." style="position:fixed;left:0;bottom:0;display:none;margin:1%;width:98%;"></textarea>
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
@@ -65,14 +65,13 @@
 
             $(document).keypress(function(event) {
                 if (((event.keyCode ? event.keyCode : event.which) == "13") && !event.shiftKey) {
+                    event.preventDefault();
+
                     if (!$("#thought").val()) return;
 
                     socket.emit("newThought", $("#thought").val());
 
                     $("#thought").val("");
-                }
-                if (((event.keyCode ? event.keyCode : event.which) == "13") && event.shiftKey) {
-                    $("#thought").val(`${$("#thought").val().substring(0, event.target.selectionStart)}\n${$("#thought").val().substring(event.target.selectionStart)}`);
                 }
             });
         </script>
