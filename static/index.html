@@ -40,7 +40,8 @@
                 thoughts.forEach(x => {
                     var bubble = document.createElement("div");
                     bubble.setAttribute("class", "text-bubble bubble");
-                    var bubbleText = document.createTextNode(decodeURIComponent(x.thought).replaceAll("\n", "<br>"));
+                    var bubbleText = document.createElement("text");
+                    bubbleText.innerHTML = decodeURIComponent(x.thought).replaceAll("\r\n", "<br>").replaceAll("\n", "<br>");
                     bubble.appendChild(bubbleText);
                     $("#bubbles").append(bubble);
                 });
