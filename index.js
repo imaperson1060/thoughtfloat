@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("newThought", async (thought) => {
-        await query("INSERT INTO `tf`(`message`) VALUES (?)", [thought]);
+        await query("INSERT INTO `tf`(`thought`) VALUES (?)", [thought]);
 
         io.emit("thoughts", await query("SELECT * FROM `tf`"));
     });
