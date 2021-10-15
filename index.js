@@ -51,7 +51,7 @@ io.on("connection", async (socket) => {
     function checkTyping(sessionId) {
         if (typing.length == 0) return;
 
-        if (typing.find(x => x.id == sessionId).lastping < Math.round(Date.now() / 1000) - 10) {
+        if (typing.find(x => x.id == sessionId) && (typing.find(x => x.id == sessionId).lastping < Math.round(Date.now() / 1000) - 10)) {
             typing = typing.filter(x => x.id != sessionId);
             if (typing.length == 0) return io.emit("someoneStoppedTyping");
         }
