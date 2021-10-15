@@ -72,7 +72,7 @@
                     $("#thought").val("");
                 }
                 if (((event.keyCode ? event.keyCode : event.which) == "13") && event.shiftKey) {
-                    console.log(event.target.selectionStart)
+                    $("#thought").val(`${$("#thought").val().substring(0, event.target.selectionStart)}\n${$("#thought").val().substring(event.target.selectionStart)}`);
                 }
             });
         </script>
