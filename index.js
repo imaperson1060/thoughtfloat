@@ -43,7 +43,7 @@ io.on("connection", async (socket) => {
         }
 
         thought = sanitize(thought, { 
-            allowedTags: sanitize.defaults.allowedTags.filter(x => x != "a");
+            allowedTags: sanitize.defaults.allowedTags.filter(x => x != "a")
 	});
 
         if (thought.match(/^ *$/)) return socket.emit("thoughtFailed", "THOUGHT_EMPTY");
