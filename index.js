@@ -42,7 +42,9 @@ io.on("connection", async (socket) => {
             thought = thought.substring(0, thought.length - 1);
         }
 
-        thought = sanitize(thought);
+        thought = sanitize(thought, { 
+            allowedTags: sanitize.defaults.allowedTags.filter(x => x != "a");
+	});
 
         if (thought.match(/^ *$/)) return socket.emit("thoughtFailed", "THOUGHT_EMPTY");
         if (filter.isProfane(thought)) return socket.emit("thoughtFailed", "THOUGHT_PROFANE");
