@@ -34,7 +34,15 @@ io.on("connection", async (socket) => {
             thought = thought.replaceAll("\n\n", "\n")
         }
 
-        thought = sanitize(thought/*.replace(/\d|\s{2,}/g, "").replace(/\s+$/, "")*/);
+        while ((thought.charAt(0) == " ") || (thought.charAt(0) == "\n")) {
+            thought = thought.substring(1, thought.length);
+        }
+
+        while ((thought.charAt(thought.length - 1) == " ") || (thought.charAt(thought.length - 1) == "\n")) {
+            thought = thought.substring(0, thought.length - 1);
+        }
+
+        thought = sanitize(thought);
 
         if (thought.match(/^ *$/)) return socket.emit("thoughtFailed", "THOUGHT_EMPTY");
         if (filter.isProfane(thought)) return socket.emit("thoughtFailed", "THOUGHT_PROFANE");
