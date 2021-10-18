@@ -32,7 +32,7 @@ io.on("connection", async (socket) => {
 
         if (thought.match(/^ *$/)) return socket.emit("thoughtFailed", "THOUGHT_EMPTY");
         if (filter.isProfane(thought)) return socket.emit("thoughtFailed", "THOUGHT_PROFANE");
-        if (encodeURIComponent(thought).length > 10000) return socket.emit("thoughtFailed", "THOUGHT_EXCEEDS_10000_CHARACTERS");
+        if (encodeURIComponent(thought).length > 2000) return socket.emit("thoughtFailed", "THOUGHT_EXCEEDS_10000_CHARACTERS");
 
         await query("INSERT INTO `tf`(`thought`) VALUES (?)", [ encodeURIComponent(thought) ]);
 
