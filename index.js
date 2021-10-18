@@ -28,13 +28,13 @@ io.on("connection", async (socket) => {
     socket.emit("thoughts", await query("SELECT * FROM `tf`"));
 
     socket.on("newThought", async (thought) => {
-        thought = sanitize(thought.replace(/\d|\s{2,}/g, "").replace(/\s+$/, ""));
+        thought = sanitize(thought.replace(/\d|\s{2,}/g, "")/*.replace(/\s+$/, "")*/);
 
         if (thought.match(/^ *$/)) return socket.emit("thoughtFailed", "THOUGHT_EMPTY");
         if (filter.isProfane(thought)) return socket.emit("thoughtFailed", "THOUGHT_PROFANE");
         if (encodeURIComponent(thought).length > 10000) return socket.emit("thoughtFailed", "THOUGHT_EXCEEDS_10000_CHARACTERS");
 
-        await query("INSERT INTO `tf`(`thought`) VALUES (?)", [encodeURIComponent(thought)]);
+        await query("INSERT INTO `tf`(`thought`) VALUES (?)", [ encodeURIComponent(thought) ]);
 
         io.emit("thoughts", await query("SELECT * FROM `tf`"));
     });
