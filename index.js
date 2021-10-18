@@ -28,6 +28,12 @@ io.on("connection", async (socket) => {
     socket.emit("thoughts", await query("SELECT * FROM `tf`"));
 
     socket.on("newThought", async (thought) => {
+        thought.replaceAll("\r\n", "\n");
+
+        while (thought.includes("\n\n")) {
+            thought = thought.replaceAll("\n\n", "\n")
+        }
+
         thought = sanitize(thought/*.replace(/\d|\s{2,}/g, "").replace(/\s+$/, "")*/);
 
         if (thought.match(/^ *$/)) return socket.emit("thoughtFailed", "THOUGHT_EMPTY");
